@@ -11,44 +11,37 @@
 </template>
 
 <script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 import { Days, Months } from '@/assets/types/enums';
 
 interface Time {
   date: string;
-  hours: number;
-  minutes: number;
+  hours: string | number;
+  minutes: string | number;
 }
 
-export default {
-  name: 'Time',
-  data() {
+@Component({ name: 'Time' })
+export default class TimeComponent extends Vue {
+  time: Time = this.getTime();
+
+  getTime(): Time {
+    const d = new Date();
+    const hours = d.getHours();
+    const minutes = d.getMinutes();
+
     return {
-      time: {
-        date: '',
-        hours: 0,
-        minutes: 0,
-      },
+      date: `${Days[d.getDay()]}, ${d.getDate()} ${Months[d.getMonth()]} ${d.getFullYear()}`,
+      hours: hours > 9 ? hours : `0${hours}`,
+      minutes: minutes > 9 ? minutes : `0${minutes}`,
     };
-  },
-  methods: {
-    getTime(): Time {
-      const d = new Date();
+  }
 
-      return {
-        date: `${Days[d.getDay()]}, ${d.getDate()} ${Months[d.getMonth()]} ${d.getFullYear()}`,
-        hours: d.getHours(),
-        minutes: d.getMinutes(),
-      };
-    },
-  },
   created() {
-    this.time = this.getTime();
-
     setInterval((): void => {
       this.time = this.getTime();
-    }, 5000);
-  },
-};
+    }, 1000);
+  }
+}
 </script>
 
 <style lang="scss" scoped>
