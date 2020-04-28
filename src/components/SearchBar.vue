@@ -1,13 +1,23 @@
 <template>
-  <div class="searchbar">
-    <label for="find" class="searchbar__label" v-show="!find">Search something</label>
-    <input type="text" name="find" id="find" v-model="find" class="searchbar__input" />
-    <button class="searchbar__button"></button>
+  <div class="searchbar" @keyup.enter="handleClick">
+    <label for="find" class="searchbar__label" v-show="!find"
+      >Search something</label
+    >
+    <input
+      type="text"
+      name="find"
+      id="find"
+      v-model="find"
+      value=""
+      class="searchbar__input"
+    />
+    <button class="searchbar__button" @click="handleClick"></button>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Engines } from '@/assets/types/enums';
 
 @Component({ name: 'SearchBar' })
 export default class SearchBarComponent extends Vue {
@@ -16,6 +26,47 @@ export default class SearchBarComponent extends Vue {
   @Watch('find')
   onFindChange() {
     return 0;
+  }
+
+  handleClick(): boolean {
+    const prefix = this.find.slice(0, 2);
+    let toSearch = '';
+    let engine: Engines = Engines.google;
+
+    if (prefix.includes(':')) {
+      toSearch = this.find.slice(2, this.find.length);
+    } else {
+      toSearch = this.find;
+      this.find = '';
+      window.location.href = `${engine}${toSearch}`;
+      return true;
+    }
+
+    switch (prefix) {
+      case 'g:':
+        engine = Engines.google;
+        break;
+      case 'd:':
+        engine = Engines.duck;
+        break;
+      case 'b:':
+        engine = Engines.bing;
+        break;
+      default:
+        engine = Engines.google;
+        toSearch = this.find;
+        this.find = '';
+        window.location.href = `${engine}${this.find}`;
+        return true;
+    }
+
+    this.find = '';
+    window.location.href = `${engine}${toSearch}`;
+    return true;
+  }
+
+  test() {
+    console.log('test');
   }
 }
 </script>

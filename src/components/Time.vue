@@ -30,7 +30,9 @@ export default class TimeComponent extends Vue {
     const minutes = d.getMinutes();
 
     return {
-      date: `${Days[d.getDay()]}, ${d.getDate()} ${Months[d.getMonth()]} ${d.getFullYear()}`,
+      date: `${Days[d.getDay()]}, ${d.getDate()} ${
+        Months[d.getMonth()]
+      } ${d.getFullYear()}`,
       hours: hours > 9 ? hours : `0${hours}`,
       minutes: minutes > 9 ? minutes : `0${minutes}`,
     };

@@ -22,3 +22,9 @@ export enum Days {
   'Saturday',
   'Sunday',
 }
+
+export enum Engines {
+  google = 'https://google.com/search?q=',
+  duck = 'https://duckduckgo.com/?q=',
+  bing = 'https://bing.com/search?q=',
+}
