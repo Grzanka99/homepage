@@ -4,8 +4,8 @@
   </div>
 </template>
 
-<script>
-import Time from '@/components/Time';
+<script lang="ts">
+import Time from '@/components/Time.vue';
 
 export default {
   name: 'app',
